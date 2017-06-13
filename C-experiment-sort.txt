@@ -1,0 +1,90 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+typedef int KeyType;
+typedef int InfoType;
+typedef struct
+{
+	KeyType key;
+	InfoType data;
+}RecType;
+
+void InsertSort(RecType R[],int n)
+{
+	int i,k;
+	RecType temp;
+	for(i=1;i<n;i++)
+	{
+		temp=R[i];
+		k=i-1;
+		while(k>=0&&temp.key<R[k].key)
+		{
+			R[k+1]=R[k];
+			k--;
+		}
+		R[k+1]=temp;
+	}
+}
+
+void QuickSort(RecType R[],int s,int t)
+{
+	RecType temp=R[s];
+	int low=s,high=t;
+	if(low<high)
+	{
+		while(low<high)
+		{
+			while(low<high&&R[high].key>=temp.key)
+				high--;
+			R[low]=R[high];
+			while(low<high&&R[low].key<=temp.key)
+				low++;
+			R[high]=R[low];
+		} 
+		R[low]=temp;
+		QuickSort(R,s,low-1);
+		QuickSort(R,low+1,t);
+	}
+}
+
+int main()
+{
+	RecType R[1000];
+	int i;
+	clock_t start,end;
+	long duration;
+	srand(time(NULL));
+	for(i=0;i<1000;i++)
+	{
+		R[i].key=rand()%1000+1;
+		if(i%20==0)
+			printf("\n%2d  ",i/20+1);
+		printf("%5d",R[i].key);
+	}
+	printf("\n-----------------------------------------------------------------------------------------------\n");
+	
+	start=clock();	//直接插入排序开始计时 
+	InsertSort(R,1000);
+	for(i=0;i<1000;i++)
+	{
+		if(i%20==0)
+			printf("\n%2d  ",i/20+1);
+		printf("%5d",R[i].key);
+	}
+	end=clock();	//结束计时 
+	duration=end-start;
+	printf("\tInsertSort time:%ld\n",duration);
+	
+	start=clock();	//快速排序开始计时 
+	QuickSort(R,0,999);
+	for(i=0;i<1000;i++)
+	{
+		if(i%20==0)
+			printf("\n%2d  ",i/20+1);
+		printf("%5d",R[i].key);
+	}
+	end=clock();	//结束计时 
+	duration=end-start;
+	printf("\tQuickSort time:%ld\n",duration);
+}
