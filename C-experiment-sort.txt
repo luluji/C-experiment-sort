@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
-
+#define MAX 20000 
 typedef int KeyType;
 typedef int InfoType;
 typedef struct
@@ -50,40 +50,49 @@ void QuickSort(RecType R[],int s,int t)
 
 int main()
 {
-	RecType R[1000];
+	RecType R[MAX],P[MAX];
 	int i;
 	clock_t start,end;
 	long duration;
 	srand(time(NULL));
-	for(i=0;i<1000;i++)
+	for(i=0;i<MAX;i++)
 	{
-		R[i].key=rand()%1000+1;
+		R[i].key=rand()%MAX+1;
+		P[i]=R[i];
 		if(i%20==0)
-			printf("\n%2d  ",i/20+1);
-		printf("%5d",R[i].key);
+			printf("\n%4d  ",i/20+1);
+		printf("%6d",R[i].key);
 	}
 	printf("\n-----------------------------------------------------------------------------------------------\n");
 	
-	start=clock();	//直接插入排序开始计时 
-	InsertSort(R,1000);
-	for(i=0;i<1000;i++)
+	for(i=0;i<MAX;i++)
 	{
 		if(i%20==0)
-			printf("\n%2d  ",i/20+1);
-		printf("%5d",R[i].key);
+			printf("\n%4d  ",i/20+1);
+		printf("%6d",P[i].key);
 	}
+	printf("\n-----------------------------------------------------------------------------------------------\n");
+
+	start=clock();	//直接插入排序开始计时 
+	InsertSort(R,MAX);
+//	for(i=0;i<MAX;i++)
+//	{
+//		if(i%20==0)
+//			printf("\n%4d  ",i/20+1);
+//		printf("%6d",R[i].key);
+//	}
 	end=clock();	//结束计时 
 	duration=end-start;
 	printf("\tInsertSort time:%ld\n",duration);
 	
 	start=clock();	//快速排序开始计时 
-	QuickSort(R,0,999);
-	for(i=0;i<1000;i++)
-	{
-		if(i%20==0)
-			printf("\n%2d  ",i/20+1);
-		printf("%5d",R[i].key);
-	}
+	QuickSort(P,0,MAX-1);
+//	for(i=0;i<MAX;i++)
+//	{
+//		if(i%20==0)
+//			printf("\n%4d  ",i/20+1);
+//		printf("%6d",P[i].key);
+//	}
 	end=clock();	//结束计时 
 	duration=end-start;
 	printf("\tQuickSort time:%ld\n",duration);
